@@ -1,0 +1,22 @@
+{
+  "name": "nodeEstagioIcaroCampos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
+    "build": "tsc"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/pg": "^8.6.1",
+    "concurrently": "^6.4.0",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.7.1",
+    "tsc": "^2.0.3"
+  }
+}
