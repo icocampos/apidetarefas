@@ -21,14 +21,13 @@ export const getTarefaById = async (req: Request, res: Response): Promise<Respon
 }
 
 export const createTarefa = async (req: Request, res: Response): Promise<Response> => {
-    const { titulo, descricao, conteudo, datacriacao, autor } = req.body;
-    const response: QueryResult = await pool.query('INSERT INTO tarefas (titulo, descricao, conteudo, datacriacao, autor) VALUES ($2, $3, $4, $5, $6)', [titulo, descricao, conteudo, datacriacao, autor]);
+    const { nome, conteudo, datacriacao, autor } = req.body;
+    const response: QueryResult = await pool.query('INSERT INTO tarefas (nome, conteudo, datacriacao, autor) VALUES ($1, $2, $3, $4)', [nome, conteudo, datacriacao, autor]);
     return res.json({
         message: 'Tarefa criada com sucesso',
         body: {
             tarefas: {
-                titulo,
-                descricao,
+                nome,
                 conteudo,
                 datacriacao,
                 autor
@@ -37,9 +36,26 @@ export const createTarefa = async (req: Request, res: Response): Promise<Respons
     });
 }
 
-/*  export const updateTarefa = async (req: Request, res: Response): Promise<Response> => {
-    
+export const updateTarefa = async (req: Request, res: Response): Promise<Response> => {
+    const id = parseInt(req.params.id);
+    const { nome, conteudo, datacriacao, autor } = req.body;
+    await pool.query('UPDATE tarefas SET nome = $1, conteudo = $2, datacriacao = $3, autor = $4 WHERE id = $5', [nome, conteudo, datacriacao, autor, id]);
+    return res.json({
+        message: 'Tarefa atualizada com sucesso',
+        body: {
+            tarefas: {
+                id,
+                nome,
+                conteudo,
+                datacriacao,
+                autor
+            }
+        }
+    });
 }
+
 export const deleteTarefa = async (req: Request, res: Response): Promise<Response> => {
-    
-} */
+    const id = parseInt(req.params.id);
+    await pool.query('DELETE FROM tarefas WHERE id = $1', [id]);
+    return res.json(`Tarefa ${id} deletada com sucesso`);
+} 

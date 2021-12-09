@@ -6,6 +6,6 @@ const index_controller_1 = require("../controllers/index.controller");
 router.get('/tarefas', index_controller_1.getTarefas);
 router.get('/tarefas/:id', index_controller_1.getTarefaById);
 router.post('/tarefas', index_controller_1.createTarefa);
-// router.put('/tarefas/:id', getTarefas);
-// router.delete('/tarefas/:id', getTarefas);
+router.put('/tarefas/:id', index_controller_1.updateTarefa);
+router.delete('/tarefas/:id', index_controller_1.deleteTarefa);
 exports.default = router;

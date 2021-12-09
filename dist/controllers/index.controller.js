@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTarefa = exports.getTarefaById = exports.getTarefas = void 0;
+exports.deleteTarefa = exports.updateTarefa = exports.createTarefa = exports.getTarefaById = exports.getTarefas = void 0;
 const database_1 = require("../database");
 const getTarefas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,14 +29,13 @@ const getTarefaById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.getTarefaById = getTarefaById;
 const createTarefa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { titulo, descricao, conteudo, datacriacao, autor } = req.body;
-    const response = yield database_1.pool.query('INSERT INTO tarefas (titulo, descricao, conteudo, datacriacao, autor) VALUES ($2, $3, $4, $5, $6)', [titulo, descricao, conteudo, datacriacao, autor]);
+    const { nome, conteudo, datacriacao, autor } = req.body;
+    const response = yield database_1.pool.query('INSERT INTO tarefas (nome, conteudo, datacriacao, autor) VALUES ($1, $2, $3, $4)', [nome, conteudo, datacriacao, autor]);
     return res.json({
         message: 'Tarefa criada com sucesso',
         body: {
             tarefas: {
-                titulo,
-                descricao,
+                nome,
                 conteudo,
                 datacriacao,
                 autor
@@ -45,9 +44,27 @@ const createTarefa = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     });
 });
 exports.createTarefa = createTarefa;
-/*  export const updateTarefa = async (req: Request, res: Response): Promise<Response> => {
-    
-}
-export const deleteTarefa = async (req: Request, res: Response): Promise<Response> => {
-    
-} */
+const updateTarefa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
+    const { nome, conteudo, datacriacao, autor } = req.body;
+    yield database_1.pool.query('UPDATE tarefas SET nome = $1, conteudo = $2, datacriacao = $3, autor = $4 WHERE id = $5', [nome, conteudo, datacriacao, autor, id]);
+    return res.json({
+        message: 'Tarefa atualizada com sucesso',
+        body: {
+            tarefas: {
+                id,
+                nome,
+                conteudo,
+                datacriacao,
+                autor
+            }
+        }
+    });
+});
+exports.updateTarefa = updateTarefa;
+const deleteTarefa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
+    yield database_1.pool.query('DELETE FROM tarefas WHERE id = $1', [id]);
+    return res.json(`Tarefa ${id} deletada com sucesso`);
+});
+exports.deleteTarefa = deleteTarefa;
